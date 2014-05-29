@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <title>Zomato interface maps</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="css/stylesheet.css"/>
+
+    </head>
+    <body>
+
+        <div class="side-bar-layout" id="sidebar">
+
+            <input type="text" id="search" oninput="dropdownData(this)" />
+            <select id="filter-list" onchange="setfilter(this)">
+
+            </select>
+
+            <div id="toggleMarker">
+                <a href="#" class="toggler off">&nbsp;</a>
+                
+                <p id="toggletooltip">Toggle this switch to add marker</p>
+            </div>
+
+            <div id="metro-data">
+
+            </div>
+        </div>
+
+        <div class="maps-content-layout">
+            <div id="map-canvas"></div>
+        </div>
+
+        <p id="metroIdentify">
+            No Metro Selected
+        </p>
+
+
+        <script type="text/javascript" src="js/jquery.js"></script>
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCqPwD-lQNxWqoHMPX9_0UckQlfBVlPVeY&sensor=FALSE"></script>
+        <script src="js/javascript.js"></script>
+
+
+    </body>
+</html>

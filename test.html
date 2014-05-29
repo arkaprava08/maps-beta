@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Zomato test maps</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+
+
+
+
+        <script type="text/javascript" src="js/jquery.js"></script>
+
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCqPwD-lQNxWqoHMPX9_0UckQlfBVlPVeY&sensor=FALSE"></script>
+        <script>
+            /* calculate distance */
+            var origin1 = new google.maps.LatLng(28.4991670000, 77.1616670000);
+            var destinationA = 'Mehrauli Gurgaon Rd, Ghitorni, New Delhi, Delhi 110070';
+
+            function calculateDistances() {
+                var service = new google.maps.DistanceMatrixService();
+
+                $.get("findexits.php?metro_id=1", function(data, status) {
+                    if (status === "success")
+                    {
+                        var jsondata = JSON.parse(JSON.stringify(data));
+                        alert(jsondata);
+                        return;
+                    }
+                });
+
+                service.getDistanceMatrix(
+                        {
+                            origins: [origin1],
+                            destinations: [destinationA],
+                            travelMode: google.maps.TravelMode.DRIVING,
+                            unitSystem: google.maps.UnitSystem.METRIC,
+                            avoidHighways: false,
+                            avoidTolls: false
+                        }, callback);
+            }
+
+            function callback(response, status) {
+                if (status != google.maps.DistanceMatrixStatus.OK) {
+                    alert('Error was: ' + status);
+                } else {
+                    var origins = response.originAddresses;
+                    var destinations = response.destinationAddresses;
+
+                    //alert(response);
+                    for (var i = 0; i < origins.length; i++) {
+                        var results = response.rows[i].elements;
+                        for (var j = 0; j < results.length; j++) {
+                            console.log(origins[i] + ' to ' + destinations[j]
+                                    + ': ' + results[j].distance.text + ' in '
+                                    + results[j].duration.text + '<br>');
+                        }
+                    }
+                }
+            }
+
+            calculateDistances();
+        </script>
+    </body>
+</html>

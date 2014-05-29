@@ -1,0 +1,157 @@
+
+/* initialization */
+html { height: 100% }
+body { 
+    height: 100%; 
+    margin: 0; 
+    padding: 0;
+    font-family: Roboto,Arial,sans-serif;
+    -ms-touch-action: none;
+}
+
+#map-canvas { 
+    height: 100%;
+}
+a{
+    cursor: pointer;
+    display: block;
+}
+
+/* main css */
+.container{
+    //position: static !important;
+    height: 100%;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0;
+    border: 0;
+}
+
+
+
+.maps-content-layout{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+
+    z-index: 1;
+}
+
+.side-bar-layout{
+    position: relative;
+    width: 20%;
+    height: 0;
+    left: 8%;
+
+    top: 4%;
+    padding: 0 0 1em 0;
+    z-index: 2;
+
+
+}
+
+#metro-data{
+    position: absolute;
+    width: 100%;
+    //height: 80%;
+    min-height: 0;
+    max-height: 4000%;
+    overflow-y: scroll;
+
+    background: white;
+    display: none;
+
+    margin-top: -1px;
+}
+
+/* search */
+#search{
+    position: relative;
+    width: 92%;
+    padding: 4%;
+
+    font-size: small;
+    outline: none;
+    border: 0;
+
+}
+
+
+#metro-data p { 
+    padding: .6em 1em .6em 1em !important;
+    margin: 0;  
+    border-bottom: 1px solid #e5e5e5;
+    font-size: small;
+}
+
+/* filter list */
+#filter-list{
+    position: absolute;
+    left: 104%;
+    top: 0;
+}
+
+/* Hidden placeholder */
+select option[disabled]:first-child { display: none; }
+
+
+/* toggler */
+a.toggler {
+    background: green;
+    cursor: pointer;
+    border: 2px solid black;
+    border-right-width: 15px;
+    padding: 0 5px;
+    border-radius: 5px;
+}
+
+a.toggler.off {
+    background: yellow;
+    border-right-width: 2px;
+    border-left-width: 15px;
+}
+
+#toggleMarker{
+    position: absolute;
+    left: 300%;
+    top: 0;
+}
+
+#toggletooltip{
+    position: absolute;
+    background: white;
+    width: 150px;
+
+    padding: .5em;
+    border-radius: .5em;
+    display: none;
+}
+
+#toggletooltip:after{
+    bottom: 100%;
+    left: 20px;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+
+    border-color: rgba(136, 183, 213, 0);
+    border-bottom-color: white;
+    border-width: 8px;
+    margin-left: -8px;
+}
+
+
+#metroIdentify{
+    z-index: 3;
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    background: white;
+    padding: .6em 1em;
+    font-size: small;
+    border-radius: 3em;
+}
