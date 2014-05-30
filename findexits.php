@@ -116,31 +116,6 @@ mysql_close($con);
                             }
                         }
 
-//                        var img = 'img/exit.png';
-//                        var markersource = new google.maps.Marker({
-//                            position: origin1,
-//                            map: map,
-//                            icon: img
-//                        });
-//                        var markerdest = new google.maps.Marker({
-//                            position: new google.maps.LatLng(lat, lng),
-//                            map: map
-//                        });
-//
-//                        google.maps.event.addListener(markersource, 'click', function() {
-//                            map.setZoom(20);
-//                            map.setCenter(markersource.getPosition());
-//                        });
-//
-//                        google.maps.event.addListener(markerdest, 'click', function() {
-//                            map.setZoom(20);
-//                            map.setCenter(markersource.getPosition());
-//                        });
-
-
-                        //calcRoute(origin1, new google.maps.LatLng(lat, lng));
-//                        
-                        //calcRoute(origin1, dest[0]);
 
                     }
                     calcRoute(origin1, new google.maps.LatLng(lat, lng));

@@ -10,6 +10,7 @@ var filter = '';
 
 var toggle = 0;
 
+
 /* drag marker variables */
 var iniLatitude = null;
 var iniLongitude = null;
@@ -24,21 +25,92 @@ function initialize() {
     map = new google.maps.Map(document.getElementById("map-canvas"),
             mapOptions);
 
-
-
     /* add double click event to add exit marker */
     google.maps.event.addListener(map, 'dblclick', function(event) {
         var lat = event.latLng.lat();
         var lng = event.latLng.lng();
-
         var Latlng = new google.maps.LatLng(lat, lng);
 
         createMarkPoints(Latlng);
     });
 
+
+    var drawingManager = new google.maps.drawing.DrawingManager({
+        drawingMode: google.maps.drawing.OverlayType.MARKER,
+        drawingControl: true,
+        drawingControlOptions: {
+            position: google.maps.ControlPosition.TOP_CENTER,
+            drawingModes: [google.maps.drawing.OverlayType.MARKER]
+        },
+        markerOptions: {
+            icon: 'img/exit.png',
+            draggable: true
+        }
+
+
+    });
+
+    google.maps.event.addListener(drawingManager, 'markercomplete', function(marker) {
+
+        console.log(marker);
+
+
+        //event.setMap(null);
+        $.get("set_exits.php?metro_id=" + metro_id + "&latitude=" + marker.position.lat().toFixed(10) + "&longitude=" + marker.position.lng().toFixed(10), function(data, status) {
+            if (status === "success")
+            {
+                alert(data);
+                if (data === "error in updation")
+                {
+                    marker.setMap(null);
+                    return;
+                }
+                exitMarkers.push(marker);
+            }
+        });
+        //edit here for delete marker
+        google.maps.event.addListener(marker, 'dragstart', function() {
+            iniLatitude = marker.position.lat();
+            iniLongitude = marker.position.lng();
+        });
+        google.maps.event.addListener(marker, 'dragend', function() {
+            updateExitMarker(marker);
+        });
+
+
+        google.maps.event.addListener(marker, 'click', function() {
+            var zoomlevel = map.getZoom();
+            map.setZoom(zoomlevel + 2);
+            map.setCenter(marker.getPosition());
+        });
+
+        google.maps.event.addListener(marker, 'rightclick', function() {
+
+            if (toggle === 1 && confirm("Delete marker ?"))
+            {
+
+
+                $.get("deleteMarker.php?latitude=" + marker.position.lat().toFixed(10) + "&longitude=" + marker.position.lng().toFixed(10), function(data, status) {
+                    if (status === "success")
+                    {
+                        alert(data);
+                        marker.setMap(null);
+                    }
+                });
+            }
+            if (toggle === 0)
+            {
+                tooltip();
+            }
+        });
+
+    });
+    drawingManager.setMap(map);
+
+
+
 }
 google.maps.event.addDomListener(window, 'load', initialize);
-
 
 function updateExitMarker(marker)
 {
@@ -52,6 +124,7 @@ function updateExitMarker(marker)
         }
     });
 }
+
 function createMarkPoints(pos) //for marking **********
 {
 
@@ -149,9 +222,7 @@ function fetchMetroList() {
                 var metro_id = $(metrodataitem.children[i]).data("values").metro_id;
 
                 var tempLatlng = new google.maps.LatLng(templat, templng);
-
                 createMarker(tempLatlng, locname, metro_id);
-
             }
 
         }
@@ -309,10 +380,19 @@ window.onload = function() {
         {
             if (map.getZoom() >= 19)
             {
-                console.log(map.getCenter().lat(), map.getCenter().lng());
-                
+                //console.log(map.getCenter().lat(), map.getCenter().lng());
+                $.get("nearestMetro.php?latitude=" + map.getCenter().lat() + "&longitude=" + map.getCenter().lng(), function(data, status) {
+                    if (status === "success")
+                    {
+                        var jsondata = JSON.parse(data);
+                        //console.log(jsondata.name);
+                        metro_id = jsondata.metro_id;
+
+                    }
+                });
+
             }
-        }, 1000);
+        }, 100);
     });
 
 
@@ -360,11 +440,6 @@ function locationLoad(item)
 
 
 }
-
-
-
-
-
 
 
 function setfilter(item) {
@@ -446,5 +521,4 @@ function tooltip() {
     $("#toggletooltip").show();
     $("#toggletooltip").delay(3000).fadeOut(500);
 }
-
 
